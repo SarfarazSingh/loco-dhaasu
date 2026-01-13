@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 120">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Anton&amp;family=Noto+Sans+Devanagari:wght@500;700&amp;family=Space+Mono&amp;display=swap');
+      .logo-main { font-family: 'Anton', Impact, sans-serif; font-size: 48px; fill: #1A1A1A; }
+      .logo-accent { fill: #C41E3A; }
+      .logo-devanagari { font-family: 'Noto Sans Devanagari', sans-serif; font-size: 14px; fill: #8B7355; font-weight: 500; }
+      .logo-devanagari-large { font-family: 'Noto Sans Devanagari', sans-serif; font-size: 28px; fill: #DAA520; font-weight: 700; opacity: 0.3; }
+      .logo-badge { font-family: 'Space Mono', monospace; font-size: 7px; fill: #8B7355; letter-spacing: 0.15em; }
+      .logo-route { font-family: 'Noto Sans Devanagari', sans-serif; font-size: 9px; fill: #C41E3A; font-weight: 500; }
+    </style>
+  </defs>
+  
+  <!-- Background Devanagari Watermark -->
+  <text x="200" y="85" class="logo-devanagari-large" transform="rotate(-8 200 85)">धासू</text>
+  
+  <!-- Main Logo Text -->
+  <text x="15" y="58" class="logo-main">LOCO</text>
+  <text x="125" y="58" class="logo-main logo-accent">DHAASU</text>
+  
+  <!-- Devanagari Subtext -->
+  <text x="15" y="80" class="logo-devanagari">लोको धासू</text>
+  
+  <!-- Decorative Line -->
+  <line x1="90" y1="80" x2="180" y2="80" stroke="#C41E3A" stroke-width="1.5" stroke-dasharray="6,3"/>
+  
+  <!-- Route Badge -->
+  <text x="195" y="80" class="logo-route">कोलकाता → मैड्रिड</text>
+  
+  <!-- EST Badge Circle -->
+  <circle cx="290" cy="50" r="22" fill="none" stroke="#1A1A1A" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="290" y="47" class="logo-badge" text-anchor="middle">EST.</text>
+  <text x="290" y="57" class="logo-badge" text-anchor="middle">2024</text>
+  
+  <!-- Accent Dots -->
+  <circle cx="15" y="98" r="3" fill="#DAA520"/>
+  <circle cx="25" y="98" r="3" fill="#C41E3A"/>
+  <circle cx="35" y="98" r="3" fill="#1A1A1A"/>
+  
+  <!-- Tagline -->
+  <text x="50" y="100" class="logo-badge">GASTRONOMIC STREETWEAR</text>
+</svg>
