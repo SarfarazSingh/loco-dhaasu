@@ -694,10 +694,44 @@ body {
 .card-placeholder {
     font-size: 80px;
     transition: transform 0.4s var(--ease-out);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .menu-card:hover .card-placeholder {
-    transform: scale(1.2) rotate(10deg);
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* ASCII Art Sketch Styles */
+.ascii-sketch {
+    font-family: 'Courier New', monospace;
+    font-size: 0.7rem;
+    line-height: 1.1;
+    white-space: pre;
+    text-align: center;
+    color: var(--black);
+    background: transparent;
+    padding: 0.5rem;
+    transition: all 0.4s var(--ease-out);
+}
+
+.menu-card:hover .ascii-sketch {
+    transform: scale(1.05);
+    color: var(--off-white);
+}
+
+/* New card color variations */
+.menu-card[data-color="#228B22"]:hover .card-image {
+    background-color: #228B22;
+}
+
+.menu-card[data-color="#FFD700"]:hover .card-image {
+    background-color: #FFD700;
+}
+
+.menu-card[data-color="#FFD700"]:hover .ascii-sketch {
+    color: var(--black);
 }
 
 .card-content {
