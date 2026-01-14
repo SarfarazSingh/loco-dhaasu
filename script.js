@@ -407,6 +407,118 @@ if (prefersReducedMotion.matches) {
 }
 
 /* ===================================
+   ROLL OPENING ANIMATION ENHANCEMENTS
+   ================================== */
+function initRollAnimation() {
+    const rollWrapper = document.querySelector('.roll-wrapper');
+    if (!rollWrapper) return;
+    
+    const spiceParticles = rollWrapper.querySelector('.spice-particles');
+    const ingredients = rollWrapper.querySelectorAll('.ingredient');
+    
+    // Create dynamic spice particles on hover
+    rollWrapper.addEventListener('mouseenter', () => {
+        createSpiceBurst(rollWrapper);
+        
+        // Add sizzle sound effect feeling with vibration
+        ingredients.forEach((ing, index) => {
+            setTimeout(() => {
+                ing.style.animation = `ingredientFloat 0.8s ease-in-out ${index * 0.05}s infinite alternate`;
+            }, index * 100);
+        });
+    });
+    
+    rollWrapper.addEventListener('mouseleave', () => {
+        ingredients.forEach(ing => {
+            ing.style.animation = '';
+        });
+    });
+    
+    // Mouse tracking for dynamic glow
+    rollWrapper.addEventListener('mousemove', (e) => {
+        const rect = rollWrapper.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width;
+        const y = (e.clientY - rect.top) / rect.height;
+        
+        const glow = rollWrapper.querySelector('.roll-glow');
+        if (glow) {
+            glow.style.background = `radial-gradient(
+                circle at ${x * 100}% ${y * 100}%,
+                rgba(255, 193, 7, 0.5) 0%,
+                rgba(255, 152, 0, 0.3) 25%,
+                rgba(255, 87, 34, 0.15) 50%,
+                transparent 70%
+            )`;
+        }
+    });
+}
+
+function createSpiceBurst(container) {
+    const colors = ['#c41e3a', '#ff6b35', '#ffd700', '#228b22', '#8b4513', '#ff4500'];
+    const particleCount = 12;
+    
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('span');
+        particle.className = 'dynamic-spice';
+        particle.style.cssText = `
+            position: absolute;
+            width: ${Math.random() * 6 + 3}px;
+            height: ${Math.random() * 6 + 3}px;
+            background: ${colors[Math.floor(Math.random() * colors.length)]};
+            border-radius: ${Math.random() > 0.5 ? '50%' : '2px'};
+            left: 50%;
+            top: 50%;
+            pointer-events: none;
+            z-index: 30;
+            opacity: 0;
+        `;
+        
+        container.appendChild(particle);
+        
+        // Animate particle
+        const angle = (Math.PI * 2 / particleCount) * i + Math.random() * 0.5;
+        const distance = 80 + Math.random() * 60;
+        const duration = 600 + Math.random() * 400;
+        
+        particle.animate([
+            { 
+                transform: 'translate(-50%, -50%) scale(0)', 
+                opacity: 0 
+            },
+            { 
+                opacity: 1,
+                offset: 0.2
+            },
+            { 
+                transform: `translate(
+                    calc(-50% + ${Math.cos(angle) * distance}px), 
+                    calc(-50% + ${Math.sin(angle) * distance}px)
+                ) scale(1.5) rotate(${Math.random() * 360}deg)`, 
+                opacity: 0 
+            }
+        ], {
+            duration: duration,
+            easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+        }).onfinish = () => particle.remove();
+    }
+}
+
+// Initialize roll animation
+document.addEventListener('DOMContentLoaded', () => {
+    initRollAnimation();
+});
+
+// Add dynamic CSS for ingredient float
+const styleSheet = document.createElement('style');
+styleSheet.textContent = `
+    @keyframes ingredientFloat {
+        0% { transform: translateY(0) rotate(0deg); }
+        100% { transform: translateY(-8px) rotate(5deg); }
+    }
+`;
+document.head.appendChild(styleSheet);
+
+/* ===================================
    CONSOLE EASTER EGG
    ================================== */
 console.log(`
