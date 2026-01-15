@@ -214,9 +214,9 @@ function initMobileNav() {
             links.style.left = '0';
             links.style.right = '0';
             links.style.flexDirection = 'column';
-            links.style.background = 'rgba(232, 220, 196, 0.98)';
+            links.style.background = 'var(--nav-bg-solid)';
             links.style.padding = '1rem';
-            links.style.borderBottom = '2px solid #1A1A1A';
+            links.style.borderBottom = '2px solid var(--black)';
             links.style.gap = '1rem';
         }
     });
@@ -523,17 +523,17 @@ document.head.appendChild(styleSheet);
    ================================== */
 console.log(`
 %c🌯 LOCO DHAASU 🌯
-%cThe Gastronomic Embassy of Kolkata in Madrid
+%cBold rolls for modern appetites.
 
 %cWe don't do "Mystical India."
-We do authentic, fast, Kolkata-style rolls
-that taste like home.
+We do bold, fast, street-style rolls
+with real ingredients.
 
 %c→ Join the squad: wa.me/yourwhatsapp
 → Instagram: @locodhaasu
 `,
-'font-size: 24px; font-weight: bold; color: #C41E3A;',
-'font-size: 14px; color: #DAA520;',
-'font-size: 12px; color: #8B7355;',
-'font-size: 10px; color: #1A1A1A;'
+'font-size: 24px; font-weight: bold; color: #FF2D55;',
+'font-size: 14px; color: #FFC400;',
+'font-size: 12px; color: #2B2F3A;',
+'font-size: 10px; color: #0D0F14;'
 );

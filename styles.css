@@ -4,21 +4,23 @@
 
 /* CSS Variables */
 :root {
-    /* Colors - Kraft & Spice Palette */
-    --kraft-light: #E8DCC4;
-    --kraft-base: #C4A77D;
-    --kraft-dark: #8B7355;
-    --cardboard: #A67B5B;
-    --spice-red: #C41E3A;
-    --spice-red-dark: #8B0000;
-    --mustard: #DAA520;
-    --mustard-bright: #FFD700;
-    --black: #1A1A1A;
-    --off-white: #FAF7F2;
-    --paper-white: #F5F0E6;
-    --ink-blue: #2C3E50;
-    --stamp-red: #B22222;
-    --vintage-cream: #FDF5E6;
+    /* Colors - Neon Spice Palette */
+    --kraft-light: #F6F7FF;
+    --kraft-base: #E2E6FF;
+    --kraft-dark: #2B2F3A;
+    --cardboard: #3B404C;
+    --spice-red: #FF2D55;
+    --spice-red-dark: #B0002B;
+    --mustard: #FFC400;
+    --mustard-bright: #FFE66D;
+    --black: #0D0F14;
+    --off-white: #FDFDFF;
+    --paper-white: #FFFFFF;
+    --ink-blue: #5B7CFF;
+    --stamp-red: #FF2D55;
+    --vintage-cream: #F8F9FF;
+    --nav-bg: rgba(246, 247, 255, 0.9);
+    --nav-bg-solid: rgba(246, 247, 255, 0.98);
     
     /* Typography */
     --font-display: 'Anton', Impact, sans-serif;
@@ -54,7 +56,9 @@ html {
 
 body {
     font-family: var(--font-body);
-    background-color: var(--kraft-light);
+    background: radial-gradient(1200px circle at 10% 10%, rgba(255, 45, 85, 0.08), transparent 45%),
+                radial-gradient(900px circle at 90% 0%, rgba(255, 196, 0, 0.12), transparent 40%),
+                var(--kraft-light);
     color: var(--black);
     overflow-x: hidden;
     line-height: 1.6;
@@ -92,7 +96,7 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: var(--space-sm) var(--space-md);
-    background: rgba(232, 220, 196, 0.95);
+    background: var(--nav-bg);
     backdrop-filter: blur(10px);
     border-bottom: 2px solid var(--black);
 }
@@ -181,11 +185,11 @@ body {
 
 .cta-nav {
     font-family: var(--font-mono);
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     text-decoration: none;
     color: var(--off-white);
     background: var(--black);
-    padding: 0.75rem 1.5rem;
+    padding: 0.9rem 1.75rem;
     letter-spacing: 0.1em;
     border: 2px solid var(--black);
     transition: all 0.3s var(--ease-out);
@@ -195,6 +199,20 @@ body {
     background: var(--spice-red);
     border-color: var(--spice-red);
     transform: translateY(-2px);
+}
+
+.cta-nav-primary {
+    background: linear-gradient(135deg, var(--spice-red) 0%, #FF6B35 100%);
+    border-color: var(--spice-red);
+    padding: 1.1rem 2.4rem;
+    font-weight: 700;
+    box-shadow: 0 12px 30px rgba(255, 45, 85, 0.28);
+}
+
+.cta-nav-primary:hover {
+    background: linear-gradient(135deg, #FF6B35 0%, var(--spice-red) 100%);
+    border-color: #FF6B35;
+    transform: translateY(-3px) scale(1.02);
 }
 
 .nav-mobile-toggle {
@@ -348,6 +366,19 @@ body {
     align-items: center;
     transition: transform 0.5s var(--ease-out);
     box-shadow: 20px 20px 0 var(--kraft-dark);
+}
+
+.roll-link {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+}
+
+.roll-link:focus-visible {
+    outline: 3px solid var(--spice-red);
+    outline-offset: 6px;
 }
 
 .roll-image:hover {
@@ -681,7 +712,7 @@ body {
 }
 
 .menu-card[data-color="#DAA520"]:hover .card-image {
-    background-color: #DAA520;
+    background-color: #FFC400;
 }
 
 .menu-card[data-color="#8B0000"]:hover .card-image {
@@ -728,11 +759,11 @@ body {
 
 /* New card color variations */
 .menu-card[data-color="#228B22"]:hover .card-image {
-    background-color: #228B22;
+    background-color: #2DD36F;
 }
 
 .menu-card[data-color="#FFD700"]:hover .card-image {
-    background-color: #FFD700;
+    background-color: #FFE66D;
 }
 
 .menu-card[data-color="#FFD700"]:hover .ascii-sketch {
@@ -748,7 +779,7 @@ body {
     font-size: 0.65rem;
     letter-spacing: 0.2em;
     color: var(--spice-red);
-    background: rgba(196, 30, 58, 0.1);
+    background: rgba(255, 45, 85, 0.12);
     padding: 0.25rem 0.75rem;
     display: inline-block;
 }
@@ -1321,7 +1352,7 @@ body.loaded .loading {
     left: 0;
     width: 100%;
     height: 20px;
-    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0 Q 10 5, 20 2 T 40 3 T 60 1 T 80 4 T 100 0 V 10 H 0 Z' fill='%23E8DCC4'/%3E%3C/svg%3E") repeat-x;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 0 Q 10 5, 20 2 T 40 3 T 60 1 T 80 4 T 100 0 V 10 H 0 Z' fill='%23F6F7FF'/%3E%3C/svg%3E") repeat-x;
     background-size: 100px 20px;
 }
 
@@ -1441,7 +1472,7 @@ body.loaded .loading {
     right: -30px;
     width: 120px;
     height: 30px;
-    background: rgba(255, 255, 200, 0.7);
+    background: rgba(255, 196, 0, 0.28);
     transform: rotate(45deg);
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
@@ -1481,7 +1512,7 @@ body.loaded .loading {
 /* Scratchy Border */
 .scratchy-border-top {
     height: 4px;
-    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 4' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 2 Q 5 0, 10 2 T 20 2 T 30 2 T 40 2 T 50 2 T 60 2 T 70 2 T 80 2 T 90 2 T 100 2' stroke='%23DAA520' stroke-width='3' fill='none'/%3E%3C/svg%3E") repeat-x;
+    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 4' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 2 Q 5 0, 10 2 T 20 2 T 30 2 T 40 2 T 50 2 T 60 2 T 70 2 T 80 2 T 90 2 T 100 2' stroke='%23FFC400' stroke-width='3' fill='none'/%3E%3C/svg%3E") repeat-x;
     background-size: 50px 4px;
 }
 
@@ -1600,7 +1631,7 @@ body.loaded .loading {
     left: -20px;
     width: 60px;
     height: 20px;
-    background: rgba(218, 165, 32, 0.3);
+    background: rgba(255, 196, 0, 0.3);
     transform: rotate(-3deg);
 }
 
@@ -2286,14 +2317,14 @@ body.loaded .loading {
     transition: all 0.3s ease;
 }
 
-.spice-1 { background: #c41e3a; top: 30%; left: 20%; }
+.spice-1 { background: #ff2d55; top: 30%; left: 20%; }
 .spice-2 { background: #ff6b35; top: 25%; right: 25%; }
-.spice-3 { background: #ffd700; top: 50%; left: 10%; }
-.spice-4 { background: #228b22; bottom: 30%; right: 15%; }
-.spice-5 { background: #c41e3a; bottom: 40%; left: 25%; }
+.spice-3 { background: #ffc400; top: 50%; left: 10%; }
+.spice-4 { background: #2dd36f; bottom: 30%; right: 15%; }
+.spice-5 { background: #ff2d55; bottom: 40%; left: 25%; }
 .spice-6 { background: #ff6b35; top: 40%; right: 10%; }
-.spice-7 { background: #ffd700; bottom: 20%; left: 15%; }
-.spice-8 { background: #228b22; top: 15%; left: 35%; }
+.spice-7 { background: #ffc400; bottom: 20%; left: 15%; }
+.spice-8 { background: #2dd36f; top: 15%; left: 35%; }
 
 .roll-wrapper:hover .spice {
     opacity: 1;
@@ -2380,7 +2411,7 @@ body.loaded .loading {
     left: 55%;
     width: 8px;
     height: 0;
-    background: linear-gradient(to bottom, #ff6b35, #c41e3a);
+    background: linear-gradient(to bottom, #ff6b35, #ff2d55);
     border-radius: 0 0 4px 4px;
     opacity: 0;
     transition: all 0.5s ease 0.3s;
