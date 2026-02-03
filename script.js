@@ -745,7 +745,8 @@ async function handleOrderSubmit(e) {
     
     try {
         // Send order to backend
-        const response = await fetch('/api/orders', {
+        const apiUrl = 'https://loco-dhaasu-backend.vercel.app/api/orders';
+        const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
