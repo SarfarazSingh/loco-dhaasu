@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOCO DHAASU | Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --spice-red: #FF2D55;
+            --mustard: #FFC400;
+            --kraft-light: #F6F7FF;
+            --kraft-base: #E2E6FF;
+            --cardboard: #3B404C;
+            --black: #0D0F14;
+            --ink-blue: #5B7CFF;
+            --font-display: 'Anton', Impact, sans-serif;
+            --font-mono: 'Space Mono', monospace;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: linear-gradient(135deg, rgba(255, 45, 85, 0.05), rgba(255, 196, 0, 0.05));
+            color: var(--black);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            background: var(--spice-red);
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-family: var(--font-mono);
+            font-size: 0.875rem;
+            letter-spacing: 0.05em;
+            opacity: 0.9;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border: 3px solid var(--cardboard);
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: var(--spice-red);
+            transform: translateY(-5px);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.1);
+        }
+
+        .stat-label {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            color: var(--cardboard);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .stat-value {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            color: var(--spice-red);
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        select, input {
+            padding: 0.75rem;
+            border: 2px solid var(--cardboard);
+            border-radius: 4px;
+            font-family: var(--font-body);
+            font-size: 0.875rem;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--spice-red);
+            box-shadow: 0 0 0 3px rgba(255,45,85,0.1);
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            background: var(--spice-red);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+        }
+
+        button:hover {
+            background: #d6204a;
+            transform: translateY(-2px);
+        }
+
+        .orders-table {
+            background: white;
+            border: 3px solid var(--black);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 12px 12px 0 rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: var(--kraft-base);
+            border-bottom: 3px solid var(--black);
+        }
+
+        th {
+            text-align: left;
+            padding: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--black);
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--kraft-base);
+            font-size: 0.875rem;
+        }
+
+        tbody tr:hover {
+            background: rgba(255, 45, 85, 0.05);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.375rem 0.75rem;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: rgba(255, 196, 0, 0.2);
+            color: #B88500;
+        }
+
+        .status-confirmed {
+            background: rgba(91, 124, 255, 0.2);
+            color: #3B4FB0;
+        }
+
+        .status-preparing {
+            background: rgba(255, 45, 85, 0.2);
+            color: #B0002B;
+        }
+
+        .status-out_for_delivery {
+            background: rgba(91, 124, 255, 0.2);
+            color: #3B4FB0;
+        }
+
+        .status-delivered {
+            background: rgba(0, 150, 0, 0.2);
+            color: #006400;
+        }
+
+        .status-cancelled {
+            background: rgba(100, 100, 100, 0.2);
+            color: #4B4B4B;
+        }
+
+        .order-items {
+            font-size: 0.75rem;
+            line-height: 1.4;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-small {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.7rem;
+            background: var(--ink-blue);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-small:hover {
+            background: #4560d8;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--cardboard);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: var(--cardboard);
+        }
+
+        .spinner {
+            border: 4px solid var(--kraft-base);
+            border-top: 4px solid var(--spice-red);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: rgba(255, 45, 85, 0.1);
+            border: 2px solid var(--spice-red);
+            color: var(--black);
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+            }
+
+            .orders-table {
+                overflow-x: auto;
+            }
+
+            table {
+                font-size: 0.75rem;
+            }
+
+            td, th {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌯 LOCO DHAASU</h1>
+            <p>Admin Order Dashboard</p>
+        </header>
+
+        <!-- Stats Section -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-label">Total Orders</div>
+                <div class="stat-value" id="totalOrders">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Pending</div>
+                <div class="stat-value" id="pendingOrders">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Completed</div>
+                <div class="stat-value" id="completedOrders">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Today's Revenue</div>
+                <div class="stat-value" id="totalRevenue">€0</div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <select id="statusFilter">
+                <option value="">All Statuses</option>
+                <option value="pending">Pending</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="preparing">Preparing</option>
+                <option value="out_for_delivery">Out for Delivery</option>
+                <option value="delivered">Delivered</option>
+                <option value="cancelled">Cancelled</option>
+            </select>
+
+            <select id="zoneFilter">
+                <option value="">All Zones</option>
+                <option value="IE_University">IE University</option>
+                <option value="Complutense">Complutense</option>
+                <option value="Central_Madrid">Central Madrid</option>
+            </select>
+
+            <button onclick="loadOrders()">🔄 Refresh</button>
+        </div>
+
+        <!-- Error Message -->
+        <div id="errorMessage" style="display:none;" class="error"></div>
+
+        <!-- Orders Table -->
+        <div class="orders-table">
+            <div id="ordersContent">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading orders...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3001';
+        let allOrders = [];
+
+        // Load orders on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadStats();
+            loadOrders();
+            
+            // Auto-refresh every 30 seconds
+            setInterval(() => {
+                loadStats();
+                loadOrders();
+            }, 30000);
+        });
+
+        async function loadStats() {
+            try {
+                const response = await fetch(`${API_BASE}/api/dashboard/stats`);
+                const data = await response.json();
+
+                document.getElementById('totalOrders').textContent = data.totalOrders;
+                document.getElementById('pendingOrders').textContent = data.pendingOrders;
+                document.getElementById('completedOrders').textContent = data.completedOrders;
+                document.getElementById('totalRevenue').textContent = `€${data.totalRevenue}`;
+            } catch (error) {
+                console.error('Error loading stats:', error);
+                showError('Failed to load stats');
+            }
+        }
+
+        async function loadOrders() {
+            try {
+                const status = document.getElementById('statusFilter').value;
+                const zone = document.getElementById('zoneFilter').value;
+                
+                let url = `${API_BASE}/api/orders?limit=100`;
+                if (status) url += `&status=${status}`;
+                if (zone) url += `&zone=${zone}`;
+
+                const response = await fetch(url);
+                const data = await response.json();
+                allOrders = data.orders;
+
+                renderOrders(allOrders);
+                hideError();
+            } catch (error) {
+                console.error('Error loading orders:', error);
+                showError('Failed to load orders. Make sure backend is running.');
+                document.getElementById('ordersContent').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🔗</div>
+                        <p>Cannot connect to backend</p>
+                        <p>Make sure the server is running: <code>npm start</code> in the backend folder</p>
+                    </div>
+                `;
+            }
+        }
+
+        function renderOrders(orders) {
+            const content = document.getElementById('ordersContent');
+
+            if (orders.length === 0) {
+                content.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <p>No orders found</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Phone</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Zone</th>
+                            <th>Status</th>
+                            <th>Time</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${orders.map(order => `
+                            <tr>
+                                <td><strong>${order.orderId.substring(0, 15)}...</strong></td>
+                                <td>${order.customer.name}</td>
+                                <td>${order.customer.phone}</td>
+                                <td class="order-items">
+                                    ${order.items.map(item => `${item.quantity}x ${item.rollType}`).join('<br>')}
+                                </td>
+                                <td><strong>€${order.total.toFixed(2)}</strong></td>
+                                <td>${order.customer.zone}</td>
+                                <td>
+                                    <span class="status-badge status-${order.orderStatus}">
+                                        ${order.orderStatus}
+                                    </span>
+                                </td>
+                                <td>${new Date(order.createdAt).toLocaleTimeString()}</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-small" onclick="updateOrderStatus('${order.orderId}', 'preparing')">Prep</button>
+                                        <button class="btn-small" onclick="updateOrderStatus('${order.orderId}', 'out_for_delivery')">OFD</button>
+                                        <button class="btn-small" onclick="updateOrderStatus('${order.orderId}', 'delivered')">Done</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+
+            content.innerHTML = html;
+        }
+
+        async function updateOrderStatus(orderId, newStatus) {
+            try {
+                const response = await fetch(`${API_BASE}/api/orders/${orderId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ orderStatus: newStatus })
+                });
+
+                if (response.ok) {
+                    loadOrders();
+                } else {
+                    showError('Failed to update order status');
+                }
+            } catch (error) {
+                console.error('Error updating status:', error);
+                showError('Error updating order status');
+            }
+        }
+
+        function showError(message) {
+            const errorEl = document.getElementById('errorMessage');
+            errorEl.textContent = message;
+            errorEl.style.display = 'block';
+        }
+
+        function hideError() {
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        // Filter listeners
+        document.getElementById('statusFilter').addEventListener('change', loadOrders);
+        document.getElementById('zoneFilter').addEventListener('change', loadOrders);
+    </script>
+</body>
+</html>

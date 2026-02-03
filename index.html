@@ -29,7 +29,7 @@
             <a href="#menu" class="nav-link">MENU</a>
             <a href="#concept" class="nav-link">CONCEPT</a>
             <a href="#squad" class="nav-link">SQUAD</a>
-            <a href="#order" class="cta-nav cta-nav-primary">ORDER NOW</a>
+            <a href="javascript:void(0)" id="navOrderBtn" class="cta-nav cta-nav-primary">ORDER NOW</a>
         </div>
         <div class="nav-mobile-toggle">
             <span></span>
@@ -203,8 +203,8 @@
                 <h3 class="bento-title">STUDENT WALLET FRIENDLY</h3>
                 <p class="bento-desc">Premium taste, IKEA prices. Because being broke shouldn't mean eating boring.</p>
                 <div class="bento-price">
-                    <span class="price-from">FROM</span>
-                    <span class="price-value">€4.50</span>
+                    <span class="price-from">Sudent Prices</span>
+                    <span class="price-value">€</span>
                 </div>
                 <div class="handwritten-arrow">↙ seriously tho</div>
             </div>
@@ -251,7 +251,7 @@
                         <h3 class="card-title">VEG ROLL</h3>
                         <p class="card-desc">For when your mom asks "beta, sabzi khayi?" and you can finally say yes. Loaded with veggies that slap harder than your alarm at 8am. Even carnivores ghost their chicken for this.</p>
                         <div class="card-footer">
-                            <span class="card-price">€4.50</span>
+                            <span class="card-price"></span>
                             <span class="card-spice">🌶️</span>
                         </div>
                     </div>
@@ -277,7 +277,7 @@
                         <h3 class="card-title">CHICKEN ROLL</h3>
                         <p class="card-desc">This chicken didn't cross the road—it rolled into your heart. Juicy, spicy, and more popular than that one guy who "knows everyone" at the party. Your taste buds will file a complaint when it's over.</p>
                         <div class="card-footer">
-                            <span class="card-price">€5.50</span>
+                            <span class="card-price"></span>
                             <span class="card-spice">🌶️🌶️</span>
                         </div>
                     </div>
@@ -303,13 +303,13 @@
                         <h3 class="card-title">EGG ROLL</h3>
                         <p class="card-desc">What came first—the chicken or the egg roll? Who cares, this one's cheaper and hits different. Protein-packed for when you're bulking on a budget. Your gym bro would approve (if he wasn't busy taking mirror selfies).</p>
                         <div class="card-footer">
-                            <span class="card-price">€4.00</span>
+                            <span class="card-price"></span>
                             <span class="card-spice">🌶️</span>
                         </div>
                     </div>
                 </div>
                 <div class="menu-card" data-color="#8B4513" data-spice="cinnamon">
-                    <div class="card-devanagari-name">मटन रोल</div>
+                    <div class="card-devanagari-name"> पनीर रोल</div>
                     <div class="card-image">
                         <div class="card-placeholder mutton">
                             <pre class="ascii-sketch">
@@ -326,10 +326,10 @@
                     </div>
                     <div class="card-content">
                         <span class="card-tag">PREMIUM FLEX</span>
-                        <h3 class="card-title">MUTTON ROLL</h3>
+                        <h3 class="card-title">PANEER ROLL</h3>
                         <p class="card-desc">For when you want to treat yourself like the royalty you pretend to be on Instagram. So tender, so juicy, it'll make you text your ex "I've changed." Spoiler: you haven't, but this roll definitely will change your life.</p>
                         <div class="card-footer">
-                            <span class="card-price">€7.00</span>
+                            <span class="card-price"></span>
                             <span class="card-spice">🌶️🌶️🌶️</span>
                         </div>
                     </div>
@@ -396,6 +396,174 @@
         </div>
     </section>
 
+    <!-- Order Modal -->
+    <div class="order-modal-overlay" id="orderModal">
+        <div class="order-modal">
+            <button class="modal-close" aria-label="Close order form">✕</button>
+            <div class="modal-header">
+                <span class="section-tag">[YOUR ORDER]</span>
+                <h2 class="modal-title">PLACE YOUR ORDER</h2>
+                <p class="modal-subtitle">Fresh rolls delivered fast to your door</p>
+            </div>
+            
+            <form id="orderForm" class="order-form">
+                <!-- Customer Info Section -->
+                <fieldset class="form-section">
+                    <legend class="form-section-title">YOUR DETAILS</legend>
+                    
+                    <div class="form-group">
+                        <label for="customerName" class="form-label">FULL NAME</label>
+                        <input type="text" id="customerName" name="customerName" required class="form-input" placeholder="Your name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customerPhone" class="form-label">PHONE NUMBER</label>
+                        <input type="tel" id="customerPhone" name="customerPhone" required class="form-input" placeholder="+34 6XX XXXXXX">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customerEmail" class="form-label">EMAIL (OPTIONAL)</label>
+                        <input type="email" id="customerEmail" name="customerEmail" class="form-input" placeholder="your@email.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customerAddress" class="form-label">DELIVERY ADDRESS</label>
+                        <input type="text" id="customerAddress" name="customerAddress" required class="form-input" placeholder="Street, building, apartment">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="deliveryZone" class="form-label">DELIVERY ZONE</label>
+                        <select id="deliveryZone" name="deliveryZone" required class="form-input form-select">
+                            <option value="">-- Select Zone --</option>
+                            <option value="IE_University">IE University</option>
+                            <option value="Complutense">Complutense</option>
+                            <option value="Central_Madrid">Central Madrid</option>
+                        </select>
+                    </div>
+                </fieldset>
+                
+                <!-- Rolls Selection Section -->
+                <fieldset class="form-section">
+                    <legend class="form-section-title">SELECT YOUR ROLLS</legend>
+                    <p class="form-section-subtitle">Choose your favorites and quantity</p>
+                    
+                    <div class="rolls-grid">
+                        <div class="roll-option">
+                            <div class="roll-option-header">
+                                <h3 class="roll-option-name">VEG ROLL 🥬</h3>
+                                <span class="roll-option-price">€6.50</span>
+                            </div>
+                            <div class="roll-option-spice">🌶️</div>
+                            <div class="roll-option-controls">
+                                <button type="button" class="qty-btn qty-minus" data-roll="VEG">−</button>
+                                <input type="number" class="qty-input" data-roll="VEG" min="0" max="10" value="0">
+                                <button type="button" class="qty-btn qty-plus" data-roll="VEG">+</button>
+                            </div>
+                        </div>
+                        
+                        <div class="roll-option">
+                            <div class="roll-option-header">
+                                <h3 class="roll-option-name">CHICKEN ROLL 🍗</h3>
+                                <span class="roll-option-price">€7.50</span>
+                            </div>
+                            <div class="roll-option-spice">🌶️🌶️</div>
+                            <div class="roll-option-controls">
+                                <button type="button" class="qty-btn qty-minus" data-roll="CHICKEN">−</button>
+                                <input type="number" class="qty-input" data-roll="CHICKEN" min="0" max="10" value="0">
+                                <button type="button" class="qty-btn qty-plus" data-roll="CHICKEN">+</button>
+                            </div>
+                        </div>
+                        
+                        <div class="roll-option">
+                            <div class="roll-option-header">
+                                <h3 class="roll-option-name">EGG ROLL 🥚</h3>
+                                <span class="roll-option-price">€5.50</span>
+                            </div>
+                            <div class="roll-option-spice">🌶️</div>
+                            <div class="roll-option-controls">
+                                <button type="button" class="qty-btn qty-minus" data-roll="EGG">−</button>
+                                <input type="number" class="qty-input" data-roll="EGG" min="0" max="10" value="0">
+                                <button type="button" class="qty-btn qty-plus" data-roll="EGG">+</button>
+                            </div>
+                        </div>
+                        
+                        <div class="roll-option">
+                            <div class="roll-option-header">
+                                <h3 class="roll-option-name">PANEER ROLL 🧀</h3>
+                                <span class="roll-option-price">€8.50</span>
+                            </div>
+                            <div class="roll-option-spice">🌶️🌶️🌶️</div>
+                            <div class="roll-option-controls">
+                                <button type="button" class="qty-btn qty-minus" data-roll="PANEER">−</button>
+                                <input type="number" class="qty-input" data-roll="PANEER" min="0" max="10" value="0">
+                                <button type="button" class="qty-btn qty-plus" data-roll="PANEER">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+                
+                <!-- Delivery Time Section -->
+                <fieldset class="form-section">
+                    <legend class="form-section-title">DELIVERY TIME</legend>
+                    
+                    <div class="form-group">
+                        <label for="deliveryTime" class="form-label">WHEN DO YOU WANT IT?</label>
+                        <select id="deliveryTime" name="deliveryTime" required class="form-input form-select">
+                            <option value="">-- Select Time --</option>
+                            <option value="ASAP">ASAP (20-30 mins)</option>
+                            <option value="12:00-12:30">12:00 - 12:30 PM</option>
+                            <option value="12:30-13:00">12:30 - 1:00 PM</option>
+                            <option value="13:00-13:30">1:00 - 1:30 PM</option>
+                            <option value="13:30-14:00">1:30 - 2:00 PM</option>
+                            <option value="19:00-19:30">7:00 - 7:30 PM</option>
+                            <option value="19:30-20:00">7:30 - 8:00 PM</option>
+                            <option value="20:00-20:30">8:00 - 8:30 PM</option>
+                        </select>
+                    </div>
+                </fieldset>
+                
+                <!-- Special Instructions -->
+                <fieldset class="form-section">
+                    <legend class="form-section-title">SPECIAL REQUESTS (OPTIONAL)</legend>
+                    
+                    <div class="form-group">
+                        <label for="specialInstructions" class="form-label">ANY SPECIAL INSTRUCTIONS?</label>
+                        <textarea id="specialInstructions" name="specialInstructions" class="form-input form-textarea" placeholder="Extra onions, no chili, allergies, etc..." rows="3"></textarea>
+                    </div>
+                </fieldset>
+                
+                <!-- Order Summary -->
+                <div class="order-summary">
+                    <div class="summary-items" id="summaryItems">
+                        <p class="summary-empty">No items selected</p>
+                    </div>
+                    <div class="summary-total">
+                        <span>TOTAL:</span>
+                        <span id="totalPrice" class="price">€0.00</span>
+                    </div>
+                </div>
+                
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="submit" class="btn-submit">CONFIRM ORDER</button>
+                    <p class="form-disclaimer">* We'll send you an SMS & email confirmation</p>
+                </div>
+            </form>
+            
+            <!-- Loading/Success States -->
+            <div class="form-loading" id="formLoading" style="display:none;">
+                <div class="spinner"></div>
+                <p>Processing your order...</p>
+            </div>
+            
+            <div class="form-success" id="formSuccess" style="display:none;">
+                <div class="success-icon">✓</div>
+                <h3>ORDER CONFIRMED!</h3>
+                <p id="successMessage">Your order has been placed. Check your SMS for updates.</p>
+            </div>
+        </div>
+    </div>
+
     <!-- Order Section -->
     <section class="order-section" id="order">
         <div class="order-content">
@@ -405,7 +573,7 @@
             </h2>
             <p class="order-subtext">We deliver to IE University, Complutense, and Central Madrid.</p>
             <div class="order-buttons">
-                <a href="#" class="order-btn primary">
+                <a href="javascript:void(0)" class="order-btn primary" id="orderBtn">
                     <span>ORDER DELIVERY</span>
                     <span class="btn-icon">🛵</span>
                 </a>

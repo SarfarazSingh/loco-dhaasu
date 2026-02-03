@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileNav();
     initCustomCursor();
     initMarqueeSpeed();
+    initOrderModal();
+    initOrderForm();
     
     // Add loaded class for animations
     setTimeout(() => {
@@ -537,3 +539,253 @@ with real ingredients.
 'font-size: 12px; color: #2B2F3A;',
 'font-size: 10px; color: #0D0F14;'
 );
+
+/* ===================================
+   ORDER MODAL FUNCTIONALITY
+   ================================== */
+
+// Roll pricing configuration
+const ROLL_PRICES = {
+    VEG: 6.50,
+    CHICKEN: 7.50,
+    EGG: 5.50,
+    PANEER: 8.50
+};
+
+function initOrderModal() {
+    const modal = document.getElementById('orderModal');
+    const orderBtn = document.getElementById('orderBtn');
+    const navOrderBtn = document.getElementById('navOrderBtn');
+    const closeBtn = document.querySelector('.modal-close');
+    
+    if (!orderBtn && !navOrderBtn || !modal) return;
+    
+    // Open modal from order section button
+    orderBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    });
+    
+    // Open modal from navigation button
+    navOrderBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    });
+    
+    // Close modal
+    closeBtn.addEventListener('click', () => {
+        closeModal();
+    });
+    
+    // Close on overlay click
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+    
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+}
+
+function closeModal() {
+    const modal = document.getElementById('orderModal');
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+function initOrderForm() {
+    const form = document.getElementById('orderForm');
+    const qtyButtons = document.querySelectorAll('.qty-btn');
+    
+    if (!form) return;
+    
+    // Setup quantity controls
+    qtyButtons.forEach(btn => {
+        btn.addEventListener('click', handleQtyChange);
+    });
+    
+    // Setup quantity inputs
+    document.querySelectorAll('.qty-input').forEach(input => {
+        input.addEventListener('change', updateOrderSummary);
+        input.addEventListener('input', updateOrderSummary);
+    });
+    
+    // Form submission
+    form.addEventListener('submit', handleOrderSubmit);
+    
+    // Initialize summary
+    updateOrderSummary();
+}
+
+function handleQtyChange(e) {
+    e.preventDefault();
+    const btn = e.target;
+    const rollType = btn.dataset.roll;
+    const input = document.querySelector(`.qty-input[data-roll="${rollType}"]`);
+    let qty = parseInt(input.value) || 0;
+    
+    if (btn.classList.contains('qty-plus')) {
+        qty = Math.min(qty + 1, 10);
+    } else if (btn.classList.contains('qty-minus')) {
+        qty = Math.max(qty - 1, 0);
+    }
+    
+    input.value = qty;
+    updateOrderSummary();
+}
+
+function updateOrderSummary() {
+    const summaryItems = document.getElementById('summaryItems');
+    const totalPrice = document.getElementById('totalPrice');
+    
+    let total = 0;
+    let items = [];
+    
+    // Collect items
+    Object.keys(ROLL_PRICES).forEach(rollType => {
+        const input = document.querySelector(`.qty-input[data-roll="${rollType}"]`);
+        const qty = parseInt(input.value) || 0;
+        
+        if (qty > 0) {
+            const price = ROLL_PRICES[rollType];
+            const itemTotal = price * qty;
+            total += itemTotal;
+            items.push({
+                type: rollType,
+                qty: qty,
+                price: price,
+                total: itemTotal
+            });
+        }
+    });
+    
+    // Update summary display
+    if (items.length === 0) {
+        summaryItems.innerHTML = '<p class="summary-empty">No items selected</p>';
+    } else {
+        summaryItems.innerHTML = items.map(item => `
+            <div class="summary-item">
+                <span>${item.qty}x ${item.type}</span>
+                <span>€${item.total.toFixed(2)}</span>
+            </div>
+        `).join('');
+    }
+    
+    // Add delivery fee (mock - €2)
+    const deliveryFee = items.length > 0 ? 2.00 : 0;
+    total += deliveryFee;
+    
+    totalPrice.textContent = `€${total.toFixed(2)}`;
+}
+
+async function handleOrderSubmit(e) {
+    e.preventDefault();
+    
+    const form = document.getElementById('orderForm');
+    const loading = document.getElementById('formLoading');
+    const success = document.getElementById('formSuccess');
+    
+    // Validate at least one roll selected
+    const qtyInputs = document.querySelectorAll('.qty-input');
+    const hasItems = Array.from(qtyInputs).some(input => parseInt(input.value) > 0);
+    
+    if (!hasItems) {
+        alert('Please select at least one roll');
+        return;
+    }
+    
+    // Show loading state
+    form.style.display = 'none';
+    loading.style.display = 'block';
+    
+    // Collect form data
+    const orderData = {
+        customer: {
+            name: document.getElementById('customerName').value,
+            phone: document.getElementById('customerPhone').value,
+            email: document.getElementById('customerEmail').value || '',
+            address: document.getElementById('customerAddress').value,
+            zone: document.getElementById('deliveryZone').value
+        },
+        items: [],
+        delivery: {
+            timeWindow: document.getElementById('deliveryTime').value,
+            timestamp: new Date().toISOString()
+        },
+        specialInstructions: document.getElementById('specialInstructions').value || '',
+        createdAt: new Date().toISOString()
+    };
+    
+    // Add items to order
+    Object.keys(ROLL_PRICES).forEach(rollType => {
+        const input = document.querySelector(`.qty-input[data-roll="${rollType}"]`);
+        const qty = parseInt(input.value) || 0;
+        
+        if (qty > 0) {
+            orderData.items.push({
+                rollType: rollType,
+                quantity: qty,
+                price: ROLL_PRICES[rollType]
+            });
+        }
+    });
+    
+    // Calculate totals
+    const subtotal = orderData.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    orderData.subtotal = subtotal;
+    orderData.deliveryFee = 2.00;
+    orderData.total = subtotal + 2.00;
+    
+    try {
+        // Send order to backend
+        const response = await fetch('/api/orders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(orderData)
+        });
+        
+        if (!response.ok) {
+            throw new Error('Failed to place order');
+        }
+        
+        const result = await response.json();
+        
+        // Show success state
+        loading.style.display = 'none';
+        success.style.display = 'block';
+        
+        // Auto-close after 5 seconds
+        setTimeout(() => {
+            closeModal();
+            resetOrderForm();
+        }, 5000);
+        
+    } catch (error) {
+        console.error('Order submission error:', error);
+        loading.style.display = 'none';
+        form.style.display = 'block';
+        alert('Error placing order. Please try again.');
+    }
+}
+
+function resetOrderForm() {
+    const form = document.getElementById('orderForm');
+    const loading = document.getElementById('formLoading');
+    const success = document.getElementById('formSuccess');
+    
+    form.reset();
+    form.style.display = 'block';
+    loading.style.display = 'none';
+    success.style.display = 'none';
+    
+    updateOrderSummary();
+}
